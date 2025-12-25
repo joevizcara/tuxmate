@@ -50,29 +50,6 @@ a new machine or can't remember all the package names for your favorite apps?
 Shows which apps are available for your selected distro, with instructions for unavailable packages.
 
 
-## �️ Roadmap
-
-### Completed
-- [x] Multi-distro support (Ubuntu, Debian, Arch, Fedora, openSUSE, NixOS)
-- [x] Flatpak & Snap universal package support
-- [x] 150+ applications across 15 categories
-- [x] Smart script generation with error handling
-- [x] AUR helper integration (yay) for Arch
-- [x] RPM Fusion auto-enable for Fedora
-- [x] Keyboard navigation (Vim keys + Arrows)
-- [x] Dark / Light theme toggle
-- [x] Copy command & Download script
-- [x] Package availability indicators
-
-### Planned
-- [ ] Search & filter applications
-- [ ] Save custom presets / profiles
-- [ ] Share configurations via URL
-- [ ] More distros (Gentoo, Void, Alpine)
-- [ ] PWA support for offline use
-- [ ] Companion CLI tool
-- [ ] Expand application catalog (200+)
-- [ ] Dotfiles integration
 
 
 ## �📸 Screenshots 🖼️
@@ -124,6 +101,32 @@ you can use the Arrow Keys or `h` `j` `k` `l` to navigate, `Enter` to sele
 ## 🤝 Contribution
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+
+
+## 🎯 Roadmap
+
+### Completed
+- [x] Multi-distro support (Ubuntu, Debian, Arch, Fedora, openSUSE, NixOS)
+- [x] Flatpak & Snap universal package support
+- [x] 150+ applications across 15 categories
+- [x] Smart script generation with error handling
+- [x] AUR helper integration (yay) for Arch
+- [x] RPM Fusion auto-enable for Fedora
+- [x] Keyboard navigation (Vim keys + Arrows)
+- [x] Dark / Light theme toggle
+- [x] Copy command & Download script
+- [x] Package availability indicators
+
+### Planned
+- [ ] Search & filter applications
+- [ ] Save custom presets / profiles
+- [ ] Share configurations via URL
+- [ ] More distros (Gentoo, Void, Alpine)
+- [ ] PWA support for offline use
+- [ ] Companion CLI tool
+- [ ] Expand application catalog (200+)
+- [ ] Dotfiles integration
 
 <div align="right">
 
