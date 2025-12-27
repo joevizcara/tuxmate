@@ -6,8 +6,14 @@ import { distros, apps, type DistroId } from '@/lib/data';
 // AUR package detection patterns
 export const AUR_PATTERNS = ['-bin', '-git', '-appimage'];
 
+// Known AUR packages that don't follow the suffix naming convention
+export const KNOWN_AUR_PACKAGES = new Set([
+    'google-chrome', 'sublime-text-4', 'spotify', 'stremio', 'dropbox',
+    'slack-desktop', 'zoom', 'proton-vpn-gtk-app', 'bitwarden', 'discord'
+]);
+
 export function isAurPackage(packageName: string): boolean {
-    return AUR_PATTERNS.some(pattern => packageName.endsWith(pattern));
+    return AUR_PATTERNS.some(pattern => packageName.endsWith(pattern)) || KNOWN_AUR_PACKAGES.has(packageName);
 }
 
 export interface UseLinuxInitReturn {
