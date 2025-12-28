@@ -174,6 +174,7 @@ export const apps: AppData[] = [
 
     // CREATIVE
     { id: 'blender', name: 'Blender', description: '3D modeling', category: 'Creative', iconUrl: si('blender', '#E87D0D'), targets: { ubuntu: 'blender', debian: 'blender', arch: 'blender', fedora: 'blender', opensuse: 'blender', nix: 'blender', flatpak: 'org.blender.Blender', snap: 'blender --classic' } },
+    { id: 'davinci-resolve', name: 'DaVinci Resolve', description: 'Video editor', category: 'Creative', iconUrl: si('davinciresolve', '#233A51'), targets: { ubuntu: '', debian: '', arch: 'davinci-resolve', fedora: '', opensuse: '', nix: 'davinci-resolve', flatpak: '', snap: '' } },
     { id: 'gimp', name: 'GIMP', description: 'Image editor', category: 'Creative', iconUrl: si('gimp', '#5C5543'), targets: { ubuntu: 'gimp', debian: 'gimp', arch: 'gimp', fedora: 'gimp', opensuse: 'gimp', nix: 'gimp', flatpak: 'org.gimp.GIMP', snap: 'gimp' } },
     { id: 'inkscape', name: 'Inkscape', description: 'Vector graphics', category: 'Creative', iconUrl: 'https://media.inkscape.org/static/images/inkscape-logo.svg', targets: { ubuntu: 'inkscape', debian: 'inkscape', arch: 'inkscape', fedora: 'inkscape', opensuse: 'inkscape', nix: 'inkscape', flatpak: 'org.inkscape.Inkscape', snap: 'inkscape' } },
     { id: 'krita', name: 'Krita', description: 'Digital painting', category: 'Creative', iconUrl: si('krita', '#337FCC'), targets: { ubuntu: 'krita', debian: 'krita', arch: 'krita', fedora: 'krita', opensuse: 'krita', nix: 'krita', flatpak: 'org.kde.krita', snap: 'krita' } },
