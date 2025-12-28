@@ -81,6 +81,45 @@ npm start
 </details>
 
 
+<details>
+<summary><h2>🐳 Docker Deployment</h2></summary>
+
+### Quick Start with Docker
+
+```bash
+# Build the Docker image
+docker build -t tuxmate:latest .
+
+# Run the container
+docker run -p 3000:3000 tuxmate:latest
+```
+
+### Using Docker Compose (Recommended)
+
+```bash
+# Start the application
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the application
+docker-compose down
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+### Configuration
+
+The Docker container exposes port 3000 by default. You can customize the port mapping:
+
+```bash
+docker run -p 8080:3000 tuxmate:latest
+```
+
+</details>
+
+
 ## 🛠️ Tech Stack
 
 - Next.js 16
@@ -117,13 +156,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 - [x] Copy command & Download script
 - [x] Package availability indicators
 - [x] Custom domain
+- [x] Docker support for containerized deployment
 
 ### Planned
 
 - [ ] Search & filter applications
 - [ ] Winget support (Windows)
 - [ ] Homebrew support (macOS)
-- [ ] Dockerfile for containerized deployment
 - [ ] Save custom presets / profiles
 - [ ] Share configurations via URL
 - [ ] More distros (Gentoo, Void, Alpine)
