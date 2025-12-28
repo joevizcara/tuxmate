@@ -52,11 +52,11 @@ Shows which apps are available for your selected distro, with instructions for u
 
 
 
-## �📸 Screenshots 🖼️
+## 📸 Screenshots
 
-![](src/screenshots/1.png)
-![](src/screenshots/2.png)
-![](src/screenshots/3.png)
+![Main interface with app selection](src/screenshots/1.png)
+![Category browsing and filtering](src/screenshots/2.png)
+![Generated install script](src/screenshots/3.png)
 
 
 
@@ -81,14 +81,119 @@ npm start
 </details>
 
 
+<details>
+<summary><h2>🗂️ Project Structure</h2></summary>
+
+```
+src/
+├── app/                    # Next.js app router
+│   ├── page.tsx            # Main page component
+│   ├── layout.tsx          # Root layout with meta tags
+│   └── globals.css         # Tailwind styles
+├── components/
+│   ├── app/                # App cards & categories
+│   ├── command/            # Command footer & AUR bar
+│   ├── common/             # Tooltips, loading states
+│   ├── distro/             # Distribution selector
+│   ├── header/             # Header & theme toggle
+│   └── ui/                 # Base UI components
+├── hooks/                  # React hooks
+│   ├── useLinuxInit.ts     # Main app state management
+│   ├── useKeyboardNavigation.ts
+│   ├── useTheme.ts
+│   └── useDelayedTooltip.ts
+├── lib/
+│   ├── data.ts             # Apps, distros, icons
+│   ├── aur.ts              # AUR package detection
+│   ├── analytics.ts        # Umami tracking
+│   ├── generateInstallScript.ts
+│   └── scripts/            # Per-distro script generators
+└── __tests__/              # Vitest unit tests
+```
+
+</details>
+
+
+<details>
+<summary><h2>🐳 Docker Deployment</h2></summary>
+
+### Quick Start with Docker
+
+```bash
+# Build the Docker image
+docker build -t tuxmate:latest .
+
+# Run the container
+docker run -p 3000:3000 tuxmate:latest
+```
+
+### Using Pre-built Images
+
+Pre-built Docker images are automatically published to GitHub Container Registry:
+
+```bash
+# Pull and run the latest image
+docker pull ghcr.io/abusoww/tuxmate:latest
+docker run -p 3000:3000 ghcr.io/abusoww/tuxmate:latest
+
+# Or use a specific version
+docker pull ghcr.io/abusoww/tuxmate:v1.0.0
+docker run -p 3000:3000 ghcr.io/abusoww/tuxmate:v1.0.0
+```
+
+### Using Docker Compose (Recommended)
+
+```bash
+# Start the application
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the application
+docker-compose down
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+### Configuration
+
+The Docker container exposes port 3000 by default. You can customize the port mapping:
+
+```bash
+docker run -p 8080:3000 tuxmate:latest
+```
+
+### Environment Variables
+
+The following environment variables are configured by default:
+
+- `NODE_ENV=production` - Run in production mode
+- `PORT=3000` - Application port
+- `NEXT_TELEMETRY_DISABLED=1` - Disable Next.js anonymous telemetry
+
+You can override these when running the container:
+
+```bash
+docker run -p 3000:3000 \
+  -e PORT=3000 \
+  -e NEXT_TELEMETRY_DISABLED=1 \
+  tuxmate:latest
+```
+
+</details>
+
+
 ## 🛠️ Tech Stack
 
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS 4
-- Framer Motion
-- GSAP
+- [Next.js](https://nextjs.org/) 16 (App Router)
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) 4
+- [Framer Motion](https://www.framer.com/motion/)
+- [GSAP](https://gsap.com/)
+- [Vitest](https://vitest.dev/) (testing)
+- [Lucide React](https://lucide.dev/) (icons)
 
 
 ## 🚀 Usage
@@ -117,13 +222,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 - [x] Copy command & Download script
 - [x] Package availability indicators
 - [x] Custom domain
+- [x] Docker support for containerized deployment
+- [x] CI/CD workflow for automated Docker builds
 
 ### Planned
 
 - [ ] Search & filter applications
 - [ ] Winget support (Windows)
 - [ ] Homebrew support (macOS)
-- [ ] Dockerfile for containerized deployment
 - [ ] Save custom presets / profiles
 - [ ] Share configurations via URL
 - [ ] More distros (Gentoo, Void, Alpine)
