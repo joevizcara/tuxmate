@@ -2,19 +2,13 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { distros, apps, type DistroId } from '@/lib/data';
+import { isAurPackage } from '@/lib/aur';
 
-// AUR package detection patterns
-export const AUR_PATTERNS = ['-bin', '-git', '-appimage'];
+// Re-export for backwards compatibility
+export { isAurPackage, AUR_PATTERNS, KNOWN_AUR_PACKAGES } from '@/lib/aur';
 
-// Known AUR packages that don't follow the suffix naming convention
-export const KNOWN_AUR_PACKAGES = new Set([
-    'google-chrome', 'sublime-text-4', 'spotify', 'stremio', 'dropbox',
-    'slack-desktop', 'zoom', 'proton-vpn-gtk-app', 'bitwarden', 'discord'
-]);
 
-export function isAurPackage(packageName: string): boolean {
-    return AUR_PATTERNS.some(pattern => packageName.endsWith(pattern)) || KNOWN_AUR_PACKAGES.has(packageName);
-}
+// ... (previous imports)
 
 export interface UseLinuxInitReturn {
     selectedDistro: DistroId;
@@ -31,19 +25,25 @@ export interface UseLinuxInitReturn {
     // Arch/AUR specific
     hasYayInstalled: boolean;
     setHasYayInstalled: (value: boolean) => void;
+    selectedHelper: 'yay' | 'paru';
+    setSelectedHelper: (helper: 'yay' | 'paru') => void;
     hasAurPackages: boolean;
     aurPackageNames: string[];
     aurAppNames: string[];
+    // Hydration state
+    isHydrated: boolean;
 }
 
 const STORAGE_KEY_DISTRO = 'linuxinit_distro';
 const STORAGE_KEY_APPS = 'linuxinit_apps';
 const STORAGE_KEY_YAY = 'linuxinit_yay_installed';
+const STORAGE_KEY_HELPER = 'linuxinit_selected_helper'; // New storage key
 
 export function useLinuxInit(): UseLinuxInitReturn {
     const [selectedDistro, setSelectedDistroState] = useState<DistroId>('ubuntu');
     const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());
     const [hasYayInstalled, setHasYayInstalled] = useState(false);
+    const [selectedHelper, setSelectedHelper] = useState<'yay' | 'paru'>('yay'); // New state
     const [hydrated, setHydrated] = useState(false);
 
     // Hydrate from localStorage on mount
@@ -52,6 +52,7 @@ export function useLinuxInit(): UseLinuxInitReturn {
             const savedDistro = localStorage.getItem(STORAGE_KEY_DISTRO) as DistroId | null;
             const savedApps = localStorage.getItem(STORAGE_KEY_APPS);
             const savedYay = localStorage.getItem(STORAGE_KEY_YAY);
+            const savedHelper = localStorage.getItem(STORAGE_KEY_HELPER) as 'yay' | 'paru' | null;
 
             if (savedDistro && distros.some(d => d.id === savedDistro)) {
                 setSelectedDistroState(savedDistro);
@@ -72,6 +73,10 @@ export function useLinuxInit(): UseLinuxInitReturn {
             if (savedYay === 'true') {
                 setHasYayInstalled(true);
             }
+
+            if (savedHelper === 'paru') {
+                setSelectedHelper('paru');
+            }
         } catch (e) {
             // Ignore localStorage errors
         }
@@ -85,10 +90,11 @@ export function useLinuxInit(): UseLinuxInitReturn {
             localStorage.setItem(STORAGE_KEY_DISTRO, selectedDistro);
             localStorage.setItem(STORAGE_KEY_APPS, JSON.stringify([...selectedApps]));
             localStorage.setItem(STORAGE_KEY_YAY, hasYayInstalled.toString());
+            localStorage.setItem(STORAGE_KEY_HELPER, selectedHelper);
         } catch (e) {
             // Ignore localStorage errors
         }
-    }, [selectedDistro, selectedApps, hasYayInstalled, hydrated]);
+    }, [selectedDistro, selectedApps, hasYayInstalled, selectedHelper, hydrated]);
 
     // Compute AUR package info for Arch
     const aurPackageInfo = useMemo(() => {
@@ -143,7 +149,12 @@ export function useLinuxInit(): UseLinuxInitReturn {
     }, []);
 
     const toggleApp = useCallback((appId: string) => {
-        if (!isAppAvailable(appId)) return;
+        // Check availability inline to avoid stale closure
+        const app = apps.find(a => a.id === appId);
+        if (!app) return;
+        const pkg = app.targets[selectedDistro];
+        if (pkg === undefined || pkg === null) return;
+
         setSelectedApps(prev => {
             const newSet = new Set(prev);
             if (newSet.has(appId)) {
@@ -153,7 +164,7 @@ export function useLinuxInit(): UseLinuxInitReturn {
             }
             return newSet;
         });
-    }, [isAppAvailable]);
+    }, [selectedDistro]);
 
     const selectAll = useCallback(() => {
         const allAvailable = apps
@@ -206,24 +217,33 @@ export function useLinuxInit(): UseLinuxInitReturn {
             if (packageNames.length === 1) {
                 return `${distro.installPrefix} ${packageNames[0]}`;
             }
+            // For multiple snap packages, we chain them with &&
+            // Note: snap doesn't support installing multiple packages in one command like apt
             return packageNames.map(p => `sudo snap install ${p}`).join(' && ');
         }
 
         // Handle Arch Linux with AUR packages
         if (selectedDistro === 'arch' && aurPackageInfo.hasAur) {
             if (!hasYayInstalled) {
-                // User doesn't have yay installed - prepend yay installation
-                const yayInstallCmd = 'sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si --noconfirm && cd - && rm -rf /tmp/yay';
-                const installCmd = `yay -S --needed --noconfirm ${packageNames.join(' ')}`;
-                return `${yayInstallCmd} && ${installCmd}`;
+                // User doesn't have current helper installed - prepend installation
+                const helperName = selectedHelper; // yay or paru
+
+                // Common setup: sudo pacman -S --needed git base-devel
+                // Then clone, make, install
+                const installHelperCmd = `sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/${helperName}.git /tmp/${helperName} && cd /tmp/${helperName} && makepkg -si --noconfirm && cd - && rm -rf /tmp/${helperName}`;
+
+                // Install packages using the helper
+                const installCmd = `${helperName} -S --needed --noconfirm ${packageNames.join(' ')}`;
+
+                return `${installHelperCmd} && ${installCmd}`;
             } else {
-                // User has yay installed - use yay for ALL packages (both official and AUR)
-                return `yay -S --needed --noconfirm ${packageNames.join(' ')}`;
+                // User has helper installed - use it for ALL packages
+                return `${selectedHelper} -S --needed --noconfirm ${packageNames.join(' ')}`;
             }
         }
 
         return `${distro.installPrefix} ${packageNames.join(' ')}`;
-    }, [selectedDistro, selectedApps, aurPackageInfo.hasAur, hasYayInstalled]);
+    }, [selectedDistro, selectedApps, aurPackageInfo.hasAur, hasYayInstalled, selectedHelper]);
 
     return {
         selectedDistro,
@@ -240,9 +260,13 @@ export function useLinuxInit(): UseLinuxInitReturn {
         // Arch/AUR specific
         hasYayInstalled,
         setHasYayInstalled,
+        selectedHelper,
+        setSelectedHelper,
         hasAurPackages: aurPackageInfo.hasAur,
         aurPackageNames: aurPackageInfo.packages,
         aurAppNames: aurPackageInfo.appNames,
+        // Hydration state
+        isHydrated: hydrated,
     };
 }
 

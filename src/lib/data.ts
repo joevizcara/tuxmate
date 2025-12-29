@@ -98,6 +98,7 @@ export const apps: AppData[] = [
     { id: 'vscodium', name: 'VSCodium', description: 'VS Code without telemetry', category: 'Dev: Editors', iconUrl: si('vscodium', '#2F80ED'), targets: { arch: 'vscodium-bin', nix: 'vscodium', flatpak: 'com.vscodium.codium', snap: 'codium --classic' }, unavailableReason: 'Not in official repos. Use [Flatpak](https://flathub.org/en/apps/com.vscodium.codium)/[Snap](https://snapcraft.io/codium) or follow instructions at [vscodium.com](https://vscodium.com/#install).' },
     { id: 'neovim', name: 'Neovim', description: 'Vim-based editor', category: 'Dev: Editors', iconUrl: si('neovim', '#57A143'), targets: { ubuntu: 'neovim', debian: 'neovim', arch: 'neovim', fedora: 'neovim', opensuse: 'neovim', nix: 'neovim', flatpak: 'com.neovim.Neovim', snap: 'nvim --classic' } },
     { id: 'helix', name: 'Helix', description: 'Post-modern editor', category: 'Dev: Editors', iconUrl: mdi('dna', '#4E2F7F'), targets: { ubuntu: 'helix', arch: 'helix', fedora: 'helix', opensuse: 'helix', nix: 'helix', flatpak: 'com.helix-editor.Helix', snap: 'helix --classic' } },
+    { id: "micro", name: "Micro", description: "Intuitive text editor", category: "Dev: Editors", iconUrl: si("microeditor", "#2E3192"), targets: { arch: "micro", ubuntu: "micro", debian: "micro", fedora: "micro", opensuse: "micro-editor", nix: "micro-editor", flatpak: "io.github.zyedidia.micro", snap: "micro --classic" } },
     { id: 'zed', name: 'Zed', description: 'Fast collaborative editor', category: 'Dev: Editors', iconUrl: si('zedindustries', '#084CCF'), targets: { arch: 'zed', fedora: 'zed', nix: 'zed-editor', flatpak: 'dev.zed.Zed' }, unavailableReason: 'Not in official repos. Use [Flatpak](https://flathub.org/en/apps/dev.zed.Zed) or see [zed.dev/docs/linux](https://zed.dev/docs/linux#other-ways-to-install-zed-on-linux) for other methods.' },
     { id: 'sublime', name: 'Sublime Text', description: 'Fast text editor', category: 'Dev: Editors', iconUrl: si('sublimetext', '#FF9800'), targets: { arch: 'sublime-text-4', nix: 'sublime-text', flatpak: 'com.sublimetext.three', snap: 'sublime-text --classic' }, unavailableReason: 'Not in official repos. Use [Flatpak](https://flathub.org/en/apps/com.sublimetext.three)/[Snap](https://snapcraft.io/sublime-text) or follow instructions at [sublimetext.com/docs/linux_repositories](https://www.sublimetext.com/docs/linux_repositories.html).' },
     { id: 'arduino', name: 'Arduino IDE', description: 'Arduino development', category: 'Dev: Editors', iconUrl: si('arduino', '#00878F'), targets: { ubuntu: 'arduino', debian: 'arduino', arch: 'arduino', fedora: 'arduino', nix: 'arduino-ide', flatpak: 'cc.arduino.IDE2', snap: 'arduino' }, unavailableReason: 'Arduino IDE is not in official openSUSE repos. Use [Flatpak](https://flathub.org/en/apps/cc.arduino.IDE2) or [Snap](https://snapcraft.io/arduino) instead.' },
@@ -170,6 +171,7 @@ export const apps: AppData[] = [
     { id: 'handbrake', name: 'HandBrake', description: 'Video transcoder', category: 'Media', iconUrl: mdi('video-vintage', '#F83262'), targets: { ubuntu: 'handbrake', debian: 'handbrake', arch: 'handbrake', opensuse: 'handbrake', nix: 'handbrake', flatpak: 'fr.handbrake.ghb', snap: 'handbrake-jz' }, unavailableReason: 'HandBrake is not in official Fedora repos. Use [Flatpak](https://flathub.org/apps/details/fr.handbrake.ghb) or [Snap](https://snapcraft.io/handbrake-jz) instead.' },
     { id: 'stremio', name: 'Stremio', description: 'Media center', category: 'Media', iconUrl: si('stremio', '#8A5AAB'), targets: { arch: 'stremio', flatpak: 'com.stremio.Stremio' }, unavailableReason: 'Only available via [AUR](https://aur.archlinux.org/packages/stremio) or [Flatpak](https://flathub.org/apps/details/com.stremio.Stremio), see [stremio.com/downloads](https://www.stremio.com/downloads) for more info.' },
     { id: 'kodi', name: 'Kodi', description: 'Home theater', category: 'Media', iconUrl: si('kodi', '#17B2E7'), targets: { ubuntu: 'kodi', debian: 'kodi', arch: 'kodi', fedora: 'kodi', opensuse: 'kodi', nix: 'kodi', flatpak: 'tv.kodi.Kodi', snap: 'kodi' } },
+    { id: 'haruna', name: 'Haruna', description: 'Qt/QML Video Player', category: 'Media', iconUrl: si('hevy', '#A3A3A3'), targets: { ubuntu: 'haruna', debian: 'haruna', arch: 'haruna', fedora: 'haruna', opensuse: 'haruna', nix: 'haruna', flatpak: 'org.kde.haruna', snap: 'haruna' } },
     { id: 'shortwave', name: 'Shortwave', description: 'Internet radio', category: 'Media', iconUrl: si('playerfm', '#478ECC'), targets: { ubuntu: 'shortwave', debian: 'shortwave', arch: 'shortwave', fedora: 'shortwave', opensuse: 'shortwave', nix: 'shortwave', flatpak: 'de.haeckerfelix.Shortwave', snap: 'shortwave' } },
 
     // CREATIVE
@@ -233,6 +235,7 @@ export const apps: AppData[] = [
     { id: 'nextcloud', name: 'Nextcloud', description: 'Cloud sync client', category: 'File Sharing', iconUrl: si('nextcloud', '#0082C9'), targets: { ubuntu: 'nextcloud-desktop', debian: 'nextcloud-desktop', arch: 'nextcloud-client', fedora: 'nextcloud-client', opensuse: 'nextcloud-desktop', nix: 'nextcloud-client', flatpak: 'com.nextcloud.desktopclient.nextcloud', snap: 'nextcloud-desktop-client' } },
     { id: 'dropbox', name: 'Dropbox', description: 'Cloud storage', category: 'File Sharing', iconUrl: si('dropbox', '#0061FF'), targets: { arch: 'dropbox', nix: 'dropbox', flatpak: 'com.dropbox.Client' }, unavailableReason: 'Only available via [AUR](https://aur.archlinux.org/packages/dropbox) or [Flatpak](https://flathub.org/apps/com.dropbox.Client). See [dropbox.com/install-linux](https://www.dropbox.com/install-linux) for other methods.' },
     { id: 'abdownloadmanager', name: 'AB Download Manager', description: 'Download accelerator', category: 'File Sharing', iconUrl: mdi('download-box', '#4CAF50'), targets: { arch: 'ab-download-manager-bin' }, unavailableReason: 'Only available via [AUR](https://aur.archlinux.org/packages/ab-download-manager-bin). Download from [abdownloadmanager.com](https://abdownloadmanager.com/).' },
+    { id: 'fdm', name: 'Free Download Manager', description: 'Download accelerator', category: 'File Sharing', iconUrl: mdi('progress-download', '#3481FE'), targets: { arch: 'freedownloadmanager-bin' }, unavailableReason: 'Not in official repos. See [freedownloadmanager.org](https://www.freedownloadmanager.org/) for other methods.' },
 
     // SYSTEM
     { id: 'gparted', name: 'GParted', description: 'Partition editor', category: 'System', iconUrl: si('gnome', '#E95420'), targets: { ubuntu: 'gparted', debian: 'gparted', arch: 'gparted', fedora: 'gparted', opensuse: 'gparted', nix: 'gparted' }, unavailableReason: 'GParted requires root access and is not available via Flatpak or Snap.' },
@@ -266,16 +269,4 @@ export const isAppAvailable = (app: AppData, distro: DistroId): boolean => {
     return distro in app.targets;
 };
 
-// Generate install command
-export const generateCommand = (selectedAppIds: Set<string>, distro: DistroId): string => {
-    const distroData = distros.find(d => d.id === distro);
-    if (!distroData) return '';
-
-    const packages = Array.from(selectedAppIds)
-        .map(id => apps.find(a => a.id === id))
-        .filter(app => app && app.targets[distro])
-        .map(app => app!.targets[distro]);
-
-    if (packages.length === 0) return 'Select apps to generate command';
-    return `${distroData.installPrefix} ${packages.join(' ')}`;
-};
+// Note: For command generation, use useLinuxInit().generatedCommand or generateInstallScript()
